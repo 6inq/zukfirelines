@@ -62,7 +62,7 @@ function App:_process(entities)
   local fire = Scanner.filterIDs(entities, ids)
   self.tiles = self.lines:update(fire, self.store:get("width"))
   if self.store:get("enabled") and TileRenderer.available() then
-    local ok, err = pcall(self.renderer.render, self.renderer, self.tiles, self.store:get("colour"))
+    local ok, err = pcall(function() return self.renderer:render(self.tiles, self.store:get("colour")) end)
     if not ok and log then log("[zuk-fire-lines] draw failed: " .. tostring(err)) end
   else
     self.renderer:clear()
@@ -104,7 +104,7 @@ function App:start()
 end
 
 function App:stop()
-  pcall(Event.ServerLogic.Unsubscribe, EVENT_ID)
+  pcall(function() return Event.ServerLogic.Unsubscribe(EVENT_ID) end)
   self.scanner:stop()
   self.renderer:clear()
   self.listeners = {}

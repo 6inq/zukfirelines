@@ -30,7 +30,7 @@ function Scanner:start()
 end
 
 function Scanner:stop()
-  pcall(Event.EntityDraw.Unsubscribe, EVENT_ID)
+  pcall(function() return Event.EntityDraw.Unsubscribe(EVENT_ID) end)
 end
 
 -- Call once per tick: swaps in the NPCs drawn since the last call.
@@ -46,10 +46,10 @@ local function near(a, b, range)
 end
 
 function Scanner.locsNear(origin, range)
-  local ok, locs = pcall(LocList.Filter, { func = function(loc)
+  local ok, locs = pcall(function() return LocList.Filter({ func = function(loc)
     local grid = loc.coordGrid
     return grid ~= nil and not loc.isHidden and near(grid, origin, range)
-  end })
+  end }) end)
   local list = {}
   if not ok or type(locs) ~= "table" then return list end
   for _, loc in ipairs(locs) do

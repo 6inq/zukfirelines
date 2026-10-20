@@ -18,7 +18,7 @@ function TileRenderer.available()
 end
 
 local function height(level, x, z)
-  local ok, h, available = pcall(World.GetGroundHeight, level, math.floor(x), math.floor(z))
+  local ok, h, available = pcall(function() return World.GetGroundHeight(level, math.floor(x), math.floor(z)) end)
   if ok and available ~= false and type(h) == "number" then return h end
   return nil
 end
@@ -101,7 +101,7 @@ function TileRenderer:render(tiles, rgba)
 end
 
 function TileRenderer:clear()
-  if self.shape then pcall(self.shape.Destroy, self.shape) end
+  if self.shape then pcall(function() return self.shape:Destroy() end) end
   self.shape, self.signature = nil, nil
 end
 

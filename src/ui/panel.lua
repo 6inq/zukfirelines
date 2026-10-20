@@ -25,7 +25,7 @@ end
 
 local function render(app)
   if not parent then return end
-  if view then pcall(view.Destroy, view) end
+  if view then pcall(function() return view:Destroy() end) end
   view = prettyui.SimpleView.new(parent, { width = parent.width, height = parent.height })
   local ok, err = pcall(build, app)
   if not ok and log then log("[zuk-fire-lines] panel failed: " .. tostring(err)) end
@@ -39,9 +39,9 @@ function Panel.start(app)
 end
 
 function Panel.stop(app)
-  pcall(Event.ContentLayerReady.Unsubscribe, EVENT_ID)
+  pcall(function() return Event.ContentLayerReady.Unsubscribe(EVENT_ID) end)
   if app then app:onChange(LISTENER, nil) end
-  if view then pcall(view.Destroy, view) end
+  if view then pcall(function() return view:Destroy() end) end
   view, parent = nil, nil
 end
 

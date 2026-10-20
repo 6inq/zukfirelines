@@ -1,9 +1,8 @@
--- Persistent settings. The db is injectable for tests.
 local Store = {}
 Store.__index = Store
 
 Store.KEY = "zuk-fire-lines-settings"
-Store.DEFAULT_COLOUR = 0xFF5A1E99 -- fiery orange, semi-transparent
+Store.DEFAULT_COLOUR = 0xFF5A1E99
 
 local function isBool(v) return type(v) == "boolean" end
 local function isColour(v) return type(v) == "number" and v == math.floor(v) and v >= 0 and v <= 0xFFFFFFFF end
@@ -28,7 +27,6 @@ function Store.new(db)
   end
   raw = type(raw) == "table" and raw or {}
   for name, spec in pairs(SETTINGS) do
-    -- Not `valid and value or default`: that idiom turns a saved `false` back into the default.
     if spec.valid(raw[name]) then self.settings[name] = raw[name] else self.settings[name] = spec.default end
   end
   self.settings.colour = math.floor(self.settings.colour)

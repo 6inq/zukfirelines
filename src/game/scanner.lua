@@ -1,6 +1,3 @@
--- Finds entities near the player: NPCs (seen through Event.EntityDraw, as Entity Hider does)
--- and scenery (LocList.Filter, as Quest Helper does). Used both to find fire lines by id and
--- by the arena inspector. Every client call is guarded.
 local Scanner = {}
 Scanner.__index = Scanner
 
@@ -10,7 +7,6 @@ function Scanner.new()
   return setmetatable({ npcs = {}, frameNPCs = {} }, Scanner)
 end
 
--- EntityDraw fires for every drawn entity; record NPCs and always let them draw.
 function Scanner:_onEntity(event)
   pcall(function()
     if event.entityType ~= EntityType.NPC then return end
@@ -33,7 +29,6 @@ function Scanner:stop()
   pcall(function() return Event.EntityDraw.Unsubscribe(EVENT_ID) end)
 end
 
--- Call once per tick: swaps in the NPCs drawn since the last call.
 function Scanner:collectNPCs()
   self.npcs, self.frameNPCs = self.frameNPCs, {}
   local list = {}
@@ -62,7 +57,6 @@ function Scanner.locsNear(origin, range)
   return list
 end
 
--- NPCs + scenery within `range` tiles of the player.
 function Scanner:near(origin, range)
   local list = {}
   for _, npc in ipairs(self:collectNPCs()) do
@@ -72,7 +66,6 @@ function Scanner:near(origin, range)
   return list
 end
 
--- Only the entities whose config id is a known fire-line id.
 function Scanner.filterIDs(entities, ids)
   local list = {}
   for _, entity in ipairs(entities) do

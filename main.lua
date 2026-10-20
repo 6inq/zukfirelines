@@ -1,4 +1,3 @@
--- ZukFireLines by 6ing
 local Store = require("src/core/store")
 local App = require("src/app")
 local Panel = require("src/ui/panel")
@@ -8,7 +7,6 @@ local store = Store.new()
 local app = App.new(store, require("src/data/fire_ids"))
 local stopped = false
 
--- Client lifecycle hook: runs when the plugin is disabled or reloaded.
 function PluginShutdown()
   if stopped then return end
   stopped = true

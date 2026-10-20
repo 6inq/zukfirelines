@@ -1,4 +1,3 @@
--- Each server tick: scan nearby entities, feed the inspector, find the fire lines and draw them.
 local Lines = require("src/core/lines")
 local Inspector = require("src/core/inspector")
 local Scanner = require("src/game/scanner")
@@ -8,14 +7,13 @@ local App = {}
 App.__index = App
 
 local EVENT_ID = "zuk-fire-lines:tick"
-App.RANGE = 40 -- tiles around the player; covers the arena
+App.RANGE = 40
 App.STATUS = {
   NO_IDS = "No fire-line ids set yet. Turn on the Arena inspector during the fight to find them.",
   NO_WORLD = "This client cannot draw on the ground yet.",
   OFF = "Tile highlighting is off.",
 }
 
----@param defaultIDs integer[] bundled fire-line config ids
 function App.new(store, defaultIDs)
   local self = setmetatable({ store = store, defaultIDs = defaultIDs or {}, listeners = {}, status = "" }, App)
   self.lines, self.inspector = Lines.new(), Inspector.new()
@@ -56,7 +54,6 @@ function App:_statusFor(ids, fireCount)
   return fireCount == 1 and "Highlighting 1 fire line." or ("Highlighting " .. fireCount .. " fire lines.")
 end
 
--- Find the fire among `entities`, update the rows and draw them.
 function App:_process(entities)
   local ids = self:fireIDs()
   local fire = Scanner.filterIDs(entities, ids)
@@ -78,15 +75,12 @@ function App:tick()
   if inspecting then self.inspector:observe(entities) end
   local status = self:_process(entities)
   self.ticks = (self.ticks or 0) + 1
-  -- The inspector list refreshes every 5 ticks (3s) rather than rebuilding the panel every tick.
   if status ~= self.status or (inspecting and self.ticks % 5 == 0) then
     self.status = status
     self:_notify()
   end
 end
 
--- Settings changed: redraw from the last tick's entities straight away. (NPCs are only
--- collected as the client draws them, so rescanning here would briefly find nothing.)
 function App:settingsChanged()
   self.renderer.signature = nil
   self.status = self:_process(self.lastEntities or {})

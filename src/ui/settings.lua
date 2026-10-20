@@ -1,4 +1,3 @@
--- Settings panel: on/off, row width (3 or 5), tile colour, fire-line ids, inspector.
 local Settings = {}
 
 local EVENT_ID = "zuk-fire-lines:settings"

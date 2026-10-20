@@ -1,4 +1,3 @@
--- Boots main.lua with a stubbed client: fire NPCs sweep across, tiles follow and vanish.
 local A = require("assert")
 local Store = require("src/core/store")
 local App = require("src/app")
@@ -67,7 +66,6 @@ local function boot(opts)
   return env
 end
 
--- Draw every NPC in env.npcs (as the client does each frame), then run a server tick.
 local function tick(env)
   for _, npc in ipairs(env.npcs) do
     env.events["Draw:zuk-fire-lines:entities"]({ entityType = EntityType.NPC, npcEntity = {

@@ -1,11 +1,9 @@
--- Draws highlighted tiles on the ground as one 3D shape (ShapeList, as Tilemarkers does).
--- Rebuilt only when the set of tiles or the colour changes; cleared when no fire is present.
 local TileRenderer = {}
 TileRenderer.__index = TileRenderer
 
 TileRenderer.TILE = 512
 local HEIGHT_OFFSET = 30
-local INSET = 16          -- small gap so neighbouring tiles read as separate squares
+local INSET = 16
 local LINE_WIDTH = 2.0
 
 function TileRenderer.new()
@@ -23,8 +21,6 @@ local function height(level, x, z)
   return nil
 end
 
--- World-space centre of a tile. Uses the client's own conversion (as Tilemarkers does via
--- ToCoordFine), falling back to 512 units per tile.
 function TileRenderer.centre(level, x, z)
   local ok, position = pcall(function()
     return CoordGrid.new(level, x // 64, z // 64, x % 64, z % 64):ToCoordFine(true).position
@@ -33,12 +29,10 @@ function TileRenderer.centre(level, x, z)
   return x * TileRenderer.TILE + TileRenderer.TILE / 2, z * TileRenderer.TILE + TileRenderer.TILE / 2
 end
 
--- Opaque outline in the same hue as the fill.
 local function outlineOf(rgba)
   return (rgba & 0xFFFFFF00) | 0xFF
 end
 
--- Four corners per tile (fine units, tile x * 512 .. +512), relative to the anchor.
 local function build(tiles, anchor, rgba)
   local data = ShapeData.new()
   local positions, colours, tris, lines = {}, {}, {}, {}
@@ -70,8 +64,6 @@ local function signatureOf(tiles, rgba)
   return table.concat(parts, "|")
 end
 
----@param tiles table[] { x, z, level } tile coordinates
----@param rgba integer 0xRRGGBBAA
 function TileRenderer:render(tiles, rgba)
   if #tiles == 0 then
     self:clear()

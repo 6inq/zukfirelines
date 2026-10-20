@@ -1,4 +1,3 @@
--- Ribbon panel: status, and the Arena inspector's findings when it is on.
 local Inspector = require("src/core/inspector")
 
 local Panel = {}

@@ -1,5 +1,3 @@
--- Arena inspector: summarises what is near the player so the fire-line ids can be found
--- in game. Entities that move between ticks are the likely fire lines. Pure.
 local Inspector = {}
 Inspector.__index = Inspector
 
@@ -13,7 +11,6 @@ function Inspector:reset()
   self.types, self.positions = {}, {}
 end
 
----@param entities table[] { uid, kind, id, name, x, z }
 function Inspector:observe(entities)
   for _, e in ipairs(entities) do
     local key = e.kind .. ":" .. tostring(e.id)
@@ -29,7 +26,6 @@ function Inspector:observe(entities)
   end
 end
 
--- Moving types first (most moves first), then by how often they were seen.
 function Inspector:rows()
   local list = {}
   for _, row in pairs(self.types) do list[#list + 1] = row end

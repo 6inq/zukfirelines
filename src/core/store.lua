@@ -2,7 +2,7 @@
 local Store = {}
 Store.__index = Store
 
-Store.KEY = "zuk-fire-lines:settings"
+Store.KEY = "zuk-fire-lines-settings"
 Store.DEFAULT_COLOUR = 0xFF5A1E99 -- fiery orange, semi-transparent
 
 local function isBool(v) return type(v) == "boolean" end
@@ -23,7 +23,7 @@ function Store.new(db)
   self.db = db or rawget(_G, "PersistentDB")
   local raw
   if self.db then
-    local ok, value = pcall(self.db.GetStructuredData, self.db, Store.KEY)
+    local ok, value = pcall(function() return self.db:GetStructuredData(Store.KEY) end)
     if ok then raw = value end
   end
   raw = type(raw) == "table" and raw or {}
@@ -44,7 +44,7 @@ function Store:set(name, value)
   if not spec or not spec.valid(value) then return false end
   self.settings[name] = value
   if self.db then
-    local ok, err = pcall(self.db.SetStructuredData, self.db, Store.KEY, self.settings)
+    local ok, err = pcall(function() return self.db:SetStructuredData(Store.KEY, self.settings) end)
     if not ok and log then log("[zuk-fire-lines] save failed: " .. tostring(err)) end
   end
   return true

@@ -89,5 +89,5 @@ Start with **Private**, then switch to **Public** after testing in the live clie
 - [ ] Find the fire-line ids with the Arena inspector, enter them in the settings, and confirm the tiles follow the fire.
 - [ ] Add the confirmed ids to `src/data/fire_ids.lua` so it works for everyone without setup, then rebuild.
 - [ ] Turn the Arena inspector off again.
-- [ ] Build with `python tools/build.py` and upload `dist/zuk-fire-lines-1.0.0.zip`.
+- [ ] Build with `python tools/build.py` and upload `dist/zuk-fire-lines-1.0.1.zip`.
 - [ ] Upload your listing image.

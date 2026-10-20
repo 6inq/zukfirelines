@@ -1,6 +1,6 @@
 # ZukFireLines
 
-An RS3 plugin that highlights TzKal-Zuk's fire lines on the floor as they sweep across the arena. Created by **6ing**. Version **1.0.0**.
+An RS3 plugin that highlights TzKal-Zuk's fire lines on the floor as they sweep across the arena. Created by **6ing**. Version **1.0.1**.
 
 Part of [6ing's RS3 plugins](https://github.com/6inq/rs3-plugins).
 
@@ -63,4 +63,6 @@ The suite has 28 tests:
 ```bash
 python tools/build.py
 ```
-The output is `dist/zuk-fire-lines-1.0.0.zip`.
+The output is `dist/zuk-fire-lines-1.0.1.zip`.
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
